@@ -24,8 +24,10 @@ public class RunRepository {
         return runs;
     }
 
-    void save(@Nonnull Run run) {
-        runs.add(run);
+    Run save(@Nonnull Run run) {
+        String id = String.valueOf(runs.size() + 1);
+        runs.add(run.withId(id));
+        return run.withId(id);
     }
 
     Optional<Run> findById(@Nonnull String id) {
