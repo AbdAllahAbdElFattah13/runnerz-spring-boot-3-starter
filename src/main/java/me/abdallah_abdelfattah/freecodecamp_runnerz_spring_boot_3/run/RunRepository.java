@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class RunRepository {
@@ -27,19 +28,24 @@ public class RunRepository {
         runs.add(run);
     }
 
-    Run findById(@Nonnull String id) {
+    Optional<Run> findById(@Nonnull String id) {
         return runs.stream()
                 .filter(run -> run.id().equals(id))
-                .findFirst()
-                .orElseThrow();
+                .findFirst();
     }
 
     void deleteById(@Nonnull String id) {
         runs.removeIf(run -> run.id().equals(id));
     }
 
-    void updateById(@Nonnull String id, @Nonnull Run run) {
-        Run existingRun = findById(id);
-        runs.set(runs.indexOf(existingRun), run);
+    Optional<Run> updateById(@Nonnull String id, @Nonnull Run run) {
+        var existingRun = findById(id);
+
+        if (existingRun.isEmpty()) {
+            return existingRun;
+        }
+
+        runs.set(runs.indexOf(existingRun.get()), run);
+        return Optional.of(run);
     }
 }
