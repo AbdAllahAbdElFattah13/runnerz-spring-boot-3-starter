@@ -37,6 +37,14 @@ public class RunController {
     }
 
     //put
+    @PutMapping("/{id}")
+    Run updateRun(@PathVariable String id, @RequestBody Run run) {
+        var updatedRun = runRepository.updateById(id, run);
+        if (updatedRun.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Run not found");
+        }
+        return updatedRun.get();
+    }
 
     //delete
 }

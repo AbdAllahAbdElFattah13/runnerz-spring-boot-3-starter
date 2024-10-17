@@ -48,6 +48,6 @@ public class RunRepository {
         }
 
         runs.set(runs.indexOf(existingRun.get()), run);
-        return Optional.of(run);
+        return Optional.of(run.withId(id));
     }
 }
