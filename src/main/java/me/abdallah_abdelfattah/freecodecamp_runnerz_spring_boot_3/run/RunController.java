@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.repository.RunRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class RunController {
     Run findById(@PathVariable String id) {
         var run = runRepository.findById(id);
         if (run.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Run not found");
+            throw new RunNotFoundException();
         }
         return run.get();
     }
