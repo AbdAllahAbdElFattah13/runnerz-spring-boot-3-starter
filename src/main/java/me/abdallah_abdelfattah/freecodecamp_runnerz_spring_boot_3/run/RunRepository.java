@@ -16,7 +16,7 @@ public class RunRepository {
     @PostConstruct
     private void init() {
         runs.add(new Run("1", "First Run", LocalDateTime.now().minusDays(3), LocalDateTime.now().minusDays(3).plusMinutes(30), 1, Type.OUTDOOR));
-        runs.add(new Run("2", "Second Run", LocalDateTime.now().minusDays(2), LocalDateTime.now().minusDays(3).plusMinutes(30), 2, Type.INDOOR));
+        runs.add(new Run("2", "Second Run", LocalDateTime.now().minusDays(2), LocalDateTime.now().minusDays(2).plusMinutes(30), 2, Type.INDOOR));
         runs.add(new Run("3", "Third Run", LocalDateTime.now().minusDays(1), LocalDateTime.now().minusDays(1).plusMinutes(30), 3, Type.OUTDOOR));
     }
 

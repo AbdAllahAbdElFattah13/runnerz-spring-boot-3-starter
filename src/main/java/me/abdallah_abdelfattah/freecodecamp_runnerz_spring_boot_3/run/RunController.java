@@ -1,5 +1,6 @@
 package me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,13 +33,13 @@ public class RunController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    Run createRun(@RequestBody Run run) {
+    Run createRun(@Valid @RequestBody Run run) {
         return runRepository.save(run);
     }
 
     //put
     @PutMapping("/{id}")
-    Run updateRun(@PathVariable String id, @RequestBody Run run) {
+    Run updateRun(@PathVariable String id, @Valid @RequestBody Run run) {
         var updatedRun = runRepository.updateById(id, run);
         if (updatedRun.isEmpty()) {
             throw new RunNotFoundException();
