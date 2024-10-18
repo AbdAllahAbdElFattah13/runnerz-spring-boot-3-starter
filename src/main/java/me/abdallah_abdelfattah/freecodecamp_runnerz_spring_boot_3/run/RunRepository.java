@@ -36,8 +36,8 @@ public class RunRepository {
                 .findFirst();
     }
 
-    void deleteById(@Nonnull String id) {
-        runs.removeIf(run -> run.id().equals(id));
+    boolean deleteById(@Nonnull String id) {
+        return runs.removeIf(run -> run.id().equals(id));
     }
 
     Optional<Run> updateById(@Nonnull String id, @Nonnull Run run) {
@@ -47,7 +47,7 @@ public class RunRepository {
             return existingRun;
         }
 
-        runs.set(runs.indexOf(existingRun.get()), run);
+        runs.set(runs.indexOf(existingRun.get()), run.withId(id));
         return Optional.of(run.withId(id));
     }
 }

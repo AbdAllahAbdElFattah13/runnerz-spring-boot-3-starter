@@ -7,7 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/1/run")
+@RequestMapping("api/v1/run")
 public class RunController {
 
     private final RunRepository runRepository;
@@ -47,4 +47,11 @@ public class RunController {
     }
 
     //delete
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteRun(@PathVariable String id) {
+        if (!runRepository.deleteById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Run not found");
+        }
+    }
 }
