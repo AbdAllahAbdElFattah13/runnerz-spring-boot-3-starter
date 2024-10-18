@@ -37,7 +37,6 @@ public class RunController {
         return runRepository.save(run);
     }
 
-    //put
     @PutMapping("/{id}")
     Run updateRun(@PathVariable String id, @Valid @RequestBody Run run) {
         var updatedRun = runRepository.updateById(id, run);
@@ -47,7 +46,6 @@ public class RunController {
         return updatedRun.get();
     }
 
-    //delete
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteRun(@PathVariable String id) {
