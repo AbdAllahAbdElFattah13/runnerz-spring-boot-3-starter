@@ -1,7 +1,9 @@
-package me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run;
+package me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.repository;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.PostConstruct;
+import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.Run;
+import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.Type;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -10,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class RunRepository {
+public class InMemoryRunRepository implements RunRepository {
     private final List<Run> runs = new ArrayList<>();
 
     @PostConstruct
@@ -20,27 +22,32 @@ public class RunRepository {
         runs.add(new Run("3", "Third Run", LocalDateTime.now().minusDays(1), LocalDateTime.now().minusDays(1).plusMinutes(30), 3, Type.OUTDOOR));
     }
 
-    List<Run> findAll() {
+    @Override
+    public List<Run> findAll() {
         return runs;
     }
 
-    Run save(@Nonnull Run run) {
+    @Override
+    public Run save(@Nonnull Run run) {
         String id = String.valueOf(runs.size() + 1);
         runs.add(run.withId(id));
         return run.withId(id);
     }
 
-    Optional<Run> findById(@Nonnull String id) {
+    @Override
+    public Optional<Run> findById(@Nonnull String id) {
         return runs.stream()
                 .filter(run -> run.id().equals(id))
                 .findFirst();
     }
 
-    boolean deleteById(@Nonnull String id) {
+    @Override
+    public boolean deleteById(@Nonnull String id) {
         return runs.removeIf(run -> run.id().equals(id));
     }
 
-    Optional<Run> updateById(@Nonnull String id, @Nonnull Run run) {
+    @Override
+    public Optional<Run> updateById(@Nonnull String id, @Nonnull Run run) {
         var existingRun = findById(id);
 
         if (existingRun.isEmpty()) {
