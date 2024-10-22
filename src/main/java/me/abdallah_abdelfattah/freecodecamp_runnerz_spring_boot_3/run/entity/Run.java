@@ -1,6 +1,5 @@
 package me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.entity;
 
-import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -32,10 +31,5 @@ public record Run(
                             " startedOn: " + startedOn + ", completedOn: " + completedOn
             );
         }
-    }
-
-    @Nonnull
-    public Run withId(Integer id) {
-        return new Run(id, this.title, this.startedOn, this.completedOn, this.miles, this.runType, this.version);
     }
 }
