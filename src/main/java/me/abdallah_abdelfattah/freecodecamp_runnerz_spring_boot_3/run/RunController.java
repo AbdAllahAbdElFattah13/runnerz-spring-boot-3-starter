@@ -3,8 +3,7 @@ package me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run;
 import jakarta.validation.Valid;
 import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.dto.UpdateRunDTO;
 import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.entity.Run;
-import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.exception.RunNotFoundException;
-import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.repository.RunRepository;
+import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.service.RunService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,48 +13,36 @@ import java.util.List;
 @RequestMapping("api/v1/run")
 public class RunController {
 
-    private final RunRepository runRepository;
+    private final RunService runService;
 
-    public RunController(RunRepository runRepository) {
-        this.runRepository = runRepository;
+    public RunController(RunService runService) {
+        this.runService = runService;
     }
 
     @GetMapping("")
     List<Run> findAll() {
-        return runRepository.findAll();
+        return runService.listAllRuns();
     }
 
     @GetMapping("/{id}")
     Run findById(@PathVariable Integer id) {
-        var run = runRepository.findById(id);
-        if (run.isEmpty()) {
-            throw new RunNotFoundException();
-        }
-        return run.get();
+        return runService.findById(id);
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     Run createRun(@Valid @RequestBody Run run) {
-        return runRepository.save(run);
+        return runService.createRun(run);
     }
 
     @PutMapping("/{id}")
-    Run updateRun(@PathVariable Integer id, @Valid @RequestBody UpdateRunDTO partialRun) {
-        var existingRun = runRepository.findById(id)
-                .orElseThrow(RunNotFoundException::new);
-        var run = partialRun.toRun(id, existingRun);
-
-        return runRepository.save(run);
+    Run updateRun(@PathVariable Integer id, @Valid @RequestBody UpdateRunDTO updateRunDTO) {
+        return runService.updateRun(id, updateRunDTO);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteRun(@PathVariable Integer id) {
-        if (runRepository.findById(id).isEmpty()) {
-            throw new RunNotFoundException();
-        }
-
-        runRepository.deleteById(id);
+        runService.deleteRun(id);
     }
 }
