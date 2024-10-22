@@ -4,6 +4,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.exception.InvalidRun;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 
@@ -26,8 +27,10 @@ public record Run(
 
     public Run {
         if (startedOn.isAfter(completedOn)) {
-            throw new IllegalArgumentException("Run cannot be completed before it starts," +
-                    " startedOn: " + startedOn + ", completedOn: " + completedOn);
+            throw new InvalidRun(
+                    "Run cannot be completed before it starts," +
+                            " startedOn: " + startedOn + ", completedOn: " + completedOn
+            );
         }
     }
 
