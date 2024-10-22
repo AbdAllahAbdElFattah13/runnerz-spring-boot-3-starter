@@ -1,4 +1,4 @@
-package me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run;
+package me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.entity;
 
 import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotEmpty;
@@ -19,7 +19,7 @@ public record Run(
         @Positive
         Integer miles,
         @NotNull
-        Type location,
+        RunType runType,
         @Version
         Integer version
 ) {
@@ -33,6 +33,6 @@ public record Run(
 
     @Nonnull
     public Run withId(Integer id) {
-        return new Run(id, this.title, this.startedOn, this.completedOn, this.miles, this.location, this.version);
+        return new Run(id, this.title, this.startedOn, this.completedOn, this.miles, this.runType, this.version);
     }
 }

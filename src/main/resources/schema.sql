@@ -6,6 +6,6 @@ CREATE TABLE Run (
    started_on timestamp NOT NULL,
    completed_on timestamp NOT NULL,
    miles INT NOT NULL,
-   location varchar(10) NOT NULL,
+   run_type varchar(10) NOT NULL,
    version INT
 );

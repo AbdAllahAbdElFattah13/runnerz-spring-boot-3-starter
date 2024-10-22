@@ -1,6 +1,10 @@
 package me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run;
 
 import jakarta.validation.Valid;
+import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.dto.UpdateRunDTO;
+import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.entity.Run;
+import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.exception.RunNotFoundException;
+import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.repository.RunRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,10 +41,10 @@ public class RunController {
     }
 
     @PutMapping("/{id}")
-    Run updateRun(@PathVariable Integer id, @Valid @RequestBody PartialRun partialRun) {
+    Run updateRun(@PathVariable Integer id, @Valid @RequestBody UpdateRunDTO partialRun) {
         var existingRun = runRepository.findById(id)
                 .orElseThrow(RunNotFoundException::new);
-        var run = partialRun.overrideRunPropertiesIfAny(id, existingRun);
+        var run = partialRun.toRun(id, existingRun);
 
         return runRepository.save(run);
     }
