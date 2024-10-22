@@ -4,11 +4,14 @@ import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 
 import java.time.LocalDateTime;
 
 public record Run(
-        String id,
+        @Id
+        Integer id,
         @NotEmpty
         String title,
         LocalDateTime startedOn,
@@ -16,7 +19,9 @@ public record Run(
         @Positive
         Integer miles,
         @NotNull
-        Type location
+        Type location,
+        @Version
+        Integer version
 ) {
 
     public Run {
@@ -27,7 +32,7 @@ public record Run(
     }
 
     @Nonnull
-    public Run withId(String id) {
-        return new Run(id, this.title, this.startedOn, this.completedOn, this.miles, this.location);
+    public Run withId(Integer id) {
+        return new Run(id, this.title, this.startedOn, this.completedOn, this.miles, this.location, this.version);
     }
 }

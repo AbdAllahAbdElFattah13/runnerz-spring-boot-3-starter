@@ -1,7 +1,6 @@
 package me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run;
 
 import jakarta.validation.Valid;
-import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.repository.RunRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +22,7 @@ public class RunController {
     }
 
     @GetMapping("/{id}")
-    Run findById(@PathVariable String id) {
+    Run findById(@PathVariable Integer id) {
         var run = runRepository.findById(id);
         if (run.isEmpty()) {
             throw new RunNotFoundException();
@@ -38,19 +37,21 @@ public class RunController {
     }
 
     @PutMapping("/{id}")
-    Run updateRun(@PathVariable String id, @Valid @RequestBody Run run) {
-        var updatedRun = runRepository.updateById(id, run);
-        if (updatedRun.isEmpty()) {
-            throw new RunNotFoundException();
-        }
-        return updatedRun.get();
+    Run updateRun(@PathVariable Integer id, @Valid @RequestBody PartialRun partialRun) {
+        var existingRun = runRepository.findById(id)
+                .orElseThrow(RunNotFoundException::new);
+        var run = partialRun.overrideRunPropertiesIfAny(id, existingRun);
+
+        return runRepository.save(run);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteRun(@PathVariable String id) {
-        if (!runRepository.deleteById(id)) {
+    void deleteRun(@PathVariable Integer id) {
+        if (runRepository.findById(id).isEmpty()) {
             throw new RunNotFoundException();
         }
+
+        runRepository.deleteById(id);
     }
 }

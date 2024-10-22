@@ -19,7 +19,7 @@ public class Application {
     @Bean
     CommandLineRunner commandLineRunner() {
         return args -> {
-            Run run = new Run("1", "First Run", LocalDateTime.now().minusMinutes(30), LocalDateTime.now(), 1, Type.OUTDOOR);
+            Run run = new Run(1, "First Run", LocalDateTime.now().minusMinutes(30), LocalDateTime.now(), 1, Type.OUTDOOR, 0);
             System.out.println("A new Run created: " + run);
         };
     }
