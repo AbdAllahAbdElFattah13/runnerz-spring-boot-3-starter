@@ -1,6 +1,7 @@
 package me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.service;
 
-import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.dto.UpdateRunDTO;
+import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.RunMapper;
+import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.dto.RunDTO;
 import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.entity.Run;
 import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.exception.RunNotFoundException;
 import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.repository.RunRepository;
@@ -13,9 +14,14 @@ import java.util.List;
 public class DefaultRunService implements RunService {
 
     RunRepository runRepository;
+    RunMapper runMapper;
 
-    public DefaultRunService(RunRepository runRepository) {
+    public DefaultRunService(
+            RunRepository runRepository,
+            RunMapper runMapper
+    ) {
         this.runRepository = runRepository;
+        this.runMapper = runMapper;
     }
 
     @Override
@@ -36,9 +42,9 @@ public class DefaultRunService implements RunService {
 
     @Override
     @Transactional
-    public Run updateRun(Integer id, UpdateRunDTO runDTO) {
+    public Run updateRun(Integer id, RunDTO runDTO) {
         var existingRun = runRepository.findById(id).orElseThrow(RunNotFoundException::new);
-        var run = runDTO.toRun(id, existingRun);
+        var run = runMapper.updateRun(existingRun, runDTO);
 
         return runRepository.save(run);
     }
