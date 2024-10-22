@@ -2,7 +2,6 @@ package me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run;
 
 import jakarta.validation.Valid;
 import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.dto.RunDTO;
-import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.entity.Run;
 import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.service.RunService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,24 +19,24 @@ public class RunController {
     }
 
     @GetMapping("")
-    List<Run> findAll() {
+    List<RunDTO> findAll() {
         return runService.listAllRuns();
     }
 
     @GetMapping("/{id}")
-    Run findById(@PathVariable Integer id) {
+    RunDTO findById(@PathVariable Integer id) {
         return runService.findById(id);
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    Run createRun(@Valid @RequestBody Run run) {
-        return runService.createRun(run);
+    RunDTO createRun(@Valid @RequestBody RunDTO runDTO) {
+        return runService.createRun(runDTO);
     }
 
     @PutMapping("/{id}")
-    Run updateRun(@PathVariable Integer id, @Valid @RequestBody RunDTO updateRunDTO) {
-        return runService.updateRun(id, updateRunDTO);
+    RunDTO updateRun(@PathVariable Integer id, @Valid @RequestBody RunDTO runDTO) {
+        return runService.updateRun(id, runDTO);
     }
 
     @DeleteMapping("/{id}")

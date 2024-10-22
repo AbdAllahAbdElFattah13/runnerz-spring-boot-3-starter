@@ -2,7 +2,6 @@ package me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.service;
 
 import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.RunMapper;
 import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.dto.RunDTO;
-import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.entity.Run;
 import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.exception.RunNotFoundException;
 import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.repository.RunRepository;
 import org.springframework.stereotype.Service;
@@ -16,37 +15,36 @@ public class DefaultRunService implements RunService {
     RunRepository runRepository;
     RunMapper runMapper;
 
-    public DefaultRunService(
-            RunRepository runRepository,
-            RunMapper runMapper
-    ) {
+    public DefaultRunService(RunRepository runRepository, RunMapper runMapper) {
         this.runRepository = runRepository;
         this.runMapper = runMapper;
     }
 
     @Override
-    public List<Run> listAllRuns() {
-        return runRepository.findAll();
+    public List<RunDTO> listAllRuns() {
+        return runMapper.toRunDTOs(runRepository.findAll());
     }
 
     @Override
-    public Run findById(Integer id) {
-        return runRepository.findById(id).orElseThrow(RunNotFoundException::new);
-    }
-
-    @Override
-    @Transactional
-    public Run createRun(Run run) {
-        return runRepository.save(run);
+    public RunDTO findById(Integer id) {
+        var run = runRepository.findById(id).orElseThrow(RunNotFoundException::new);
+        return runMapper.toRunDTO(run);
     }
 
     @Override
     @Transactional
-    public Run updateRun(Integer id, RunDTO runDTO) {
+    public RunDTO createRun(RunDTO runDTO) {
+        return runMapper.toRunDTO(runRepository.save(runMapper.toRun(runDTO)));
+    }
+
+    @Override
+    @Transactional
+    public RunDTO updateRun(Integer id, RunDTO runDTO) {
         var existingRun = runRepository.findById(id).orElseThrow(RunNotFoundException::new);
         var run = runMapper.updateRun(existingRun, runDTO);
+        var updatedRun = runRepository.save(run);
 
-        return runRepository.save(run);
+        return runMapper.toRunDTO(updatedRun);
     }
 
     @Override

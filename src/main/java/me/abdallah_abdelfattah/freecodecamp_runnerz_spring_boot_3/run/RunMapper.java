@@ -5,6 +5,8 @@ import me.abdallah_abdelfattah.freecodecamp_runnerz_spring_boot_3.run.entity.Run
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface RunMapper {
 
@@ -12,7 +14,11 @@ public interface RunMapper {
     @Mapping(target = "version", ignore = true)
     Run toRun(RunDTO runDTO);
 
+    List<Run> toRuns(List<RunDTO> runDTOs);
+
     RunDTO toRunDTO(Run run);
+
+    List<RunDTO> toRunDTOs(List<Run> runs);
 
     default Run updateRun(Run run, RunDTO runDTO) {
         if (runDTO == null) {
